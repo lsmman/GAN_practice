@@ -19,3 +19,28 @@ a.requires_grad_(True)
 print(a.requires_grad)
 b = (a*a).sum()
 print(b.grad_fn)
+
+# backward 라고 치면 x가 영향을 미치는
+# backprop를 계산한다.
+out.backward()
+#== out.backward(torch.tensor(1))\
+
+print(x.grad) # d(out)/dx
+
+x = torch.randn(3, requires_grad= True)
+y= x*2
+while y.data.norm() < 1000:
+    y = y*2
+
+print(y)
+
+gradients = torch.tensor([0.1, 1.0, 0.0001], dtype=torch.float)
+y.backward(gradients)
+
+print(x.grad)
+
+print(x.requires_grad)
+print((x**2).requires_grad)
+
+with torch.no_grad():
+    print((x**2).requires_grad)
