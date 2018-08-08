@@ -2,7 +2,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+import numpy as np
 class Mnist_cnn(nn.Module):
     def __init__(self):
         super(Mnist_cnn, self).__init__()
@@ -14,8 +14,12 @@ class Mnist_cnn(nn.Module):
         self.fc2 = nn.Linear(50, 10)
 
     def forward(self, model):
+        # print(np.shape(self.conv1(model)))
+        # model = self.conv1(model)
+        # print(np.shape(self.conv2(model)))
         model = self.pool1(F.relu(self.conv1(model)))
         model = self.pool2(F.relu(self.conv2(model)))
+        print("사이ㅉ@ㅡ@@@@@@@@@@@@@@@@@@@@@@@@@@", np.shape(model))
 
         ''' view가 들어가야한다!'''
         model = model.view(model.size(0), -1)
