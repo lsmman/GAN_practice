@@ -1,0 +1,18 @@
+
+*03의 CNN을 만들어보면서 틀린 점
+* 틀린 점
+모듈을 쓸 때 대문자이고
+super(이름, self).__init__() 이라고 쳐야 super가 적용된다.
+그리고 linear 전에는 view가 들어가서 (batch size, -1) 로 펴줘야한다.
+
+
+* nn.module의 사용 중 주의점
+torch.nn only supports mini-batches The entire torch.nn package only supports inputs that are a mini-batch of samples, and not a single sample.
+-> nn은 mini-batches만을 지원하기 때문에 single sample은 적용되지 않는다.
+
+For example, nn.Conv2d will take in a 4D Tensor of nSamples x nChannels x Height x Width.
+-> conv2d는 위처럼 이루어져 있다
+
+If you have a single sample, just use input.unsqueeze(0) to add a fake batch dimension.
+-> single sample이면 unsqueeze를 사용해서 빈 dimension을 늘려서 사용하도록 하여라
+
