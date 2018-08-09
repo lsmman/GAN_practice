@@ -19,7 +19,7 @@ class Mnist_cnn(nn.Module):
         # print(np.shape(self.conv2(model)))
         model = self.pool1(F.relu(self.conv1(model)))
         model = self.pool2(F.relu(self.conv2(model)))
-        print("사이ㅉ@ㅡ@@@@@@@@@@@@@@@@@@@@@@@@@@", np.shape(model))
+        print(" ", np.shape(model))
 
         ''' view가 들어가야한다!'''
         model = model.view(model.size(0), -1)
@@ -51,3 +51,42 @@ print(net.conv1.weight.grad.size())
 print(net.conv1.weight.data.norm())
 print(net.conv1.weight.grad.data.norm())
 
+#### forward and backward function hooks
+print("\nforward and backward function hooks\n")
+def printnorm(self, input, output):
+    # input is a tuple of packed inputs
+    # output is a Tensor. output.data is the Tensor we are interested
+    print('Inside ' + self.__class__.__name__ + ' forward')
+    print('')
+    print('input: ', type(input))
+    print('input[0]: ', type(input[0]))
+    print('output: ', type(output))
+    print('')
+    print('input size:', input[0].size())
+    print('output size:', output.data.size())
+    print('output norm:', output.data.norm())
+
+
+net.conv2.register_forward_hook(printnorm)
+
+out = net(input)
+
+def printgradnorm(self, grad_input, grad_output):
+    print('Inside ' + self.__class__.__name__ + ' backward')
+    print('Inside class:' + self.__class__.__name__)
+    print('')
+    print('grad_input: ', type(grad_input))
+    print('grad_input[0]: ', type(grad_input[0]))
+    print('grad_output: ', type(grad_output))
+    print('grad_output[0]: ', type(grad_output[0]))
+    print('')
+    print('grad_input size:', grad_input[0].size())
+    print('grad_output size:', grad_output[0].size())
+    print('grad_input norm:', grad_input[0].norm())
+
+
+net.conv2.register_backward_hook(printgradnorm)
+
+out = net(input)
+err = loss_fn(out, target)
+err.backward()
