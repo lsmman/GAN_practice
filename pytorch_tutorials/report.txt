@@ -1,4 +1,4 @@
-
+﻿
 *03의 CNN을 만들어보면서 틀린 점
 * 틀린 점
 모듈을 쓸 때 대문자이고
@@ -16,3 +16,5 @@ For example, nn.Conv2d will take in a 4D Tensor of nSamples x nChannels x Height
 If you have a single sample, just use input.unsqueeze(0) to add a fake batch dimension.
 -> single sample이면 unsqueeze를 사용해서 빈 dimension을 늘려서 사용하도록 하여라
 
+
+starGAN을 받아 돌려보았다.
